@@ -1,4 +1,6 @@
-click_pesquisa_db
+name: click_pesquisa_db
+hostname: localhost
+username: root
 
 ##############################
 Tabela: form
