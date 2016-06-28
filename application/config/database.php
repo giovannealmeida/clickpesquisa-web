@@ -78,7 +78,7 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'clickpesquisa',
+	'database' => 'click_pesquisa_db',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -117,5 +117,3 @@ $db['clickdecisao'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-
-
