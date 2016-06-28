@@ -132,7 +132,7 @@ Descrição:
 Tabela que armazenas as pesquisas realizadas. Assim que o operador finalizar uma pesquisa e a enviar para o servidor, um novo registro será adicionado a esta tabela.
 
 Colunas:
-id	    - id da pesquisa 
+id	    - id da pesquisa
 user_id	    - id do usuário que realizou a pesquisa (operador)
 form_id	    - id do formulário utilizado na pesquisa
 date	    - data de realização da pesquisa
@@ -167,8 +167,8 @@ last_name  - último nome do usuário
 username   - nome do usuário para acesso ao sistema
 password   - senha do usuário para acesso ao sistema
 email	   - e-mail do usuário
-photo	   - id da foto de perfil do usuário
-role 	   - papel assumido pelo usuário no sistema (administrador, operador, etc.)
+photo_id   - id da foto de perfil do usuário
+role_id	   - id do papel assumido pelo usuário no sistema (administrador, operador, etc.)
 status	   - status do usuário (ativo ou inativo)
 reg_time   - data do registro do usuário
 
@@ -180,5 +180,5 @@ Descrição:
 Tabela que armazena todos os papéis que um usuário pode assumir no sistema.
 
 Colunas:
-id	- id do papel
+id		- id do papel
 role 	- nome do papel
