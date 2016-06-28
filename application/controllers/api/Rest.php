@@ -696,4 +696,32 @@ class Rest extends REST_Controller {
         $message = ['message' => 'Location added'];
         $this->set_response($message, REST_Controller::HTTP_CREATED);
     }
+
+    /* LOGIN RESOURCE */
+    function login_post(){
+        $this->load->model('User_Model','User');
+        $username = $this->post('username');
+        $password = $this->post('password');
+
+        if($password !== NULL && $password !== NULL){
+            $user = $this->User->getByUsernameAndPassword($username,$password);
+            if($user !== NULL){
+                $message = [
+                    'status' => TRUE,
+                    'data' => $user,
+                    'message' => ''];
+                $this->set_response($message, REST_Controller::HTTP_OK);
+            } else {
+                $message = [
+                    'status' => FALSE,
+                    'message' => 'User could not be found'];
+                $this->set_response($message, REST_Controller::HTTP_NOT_FOUND);
+            }
+        } else {
+            $message = [
+                'status' => FALSE,
+                'message' => 'No username or password informed'];
+            $this->set_response($message, REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
 }

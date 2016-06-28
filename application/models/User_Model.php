@@ -33,6 +33,16 @@ class User_Model extends CI_Model {
 		return NULL;
 	}
 
+	function getByUsernameAndPassword($username,$password) {
+		$this->db->where('username', $username);
+		$this->db->where('password', $password);
+		$query = $this->db->get('user');
+		if (count($query->result()) == 1) {
+			return $query->row_array();
+		}
+		return NULL;
+	}
+
 	function getAll(){
 		$query = $this->db->get('user');
 		if(!empty($query)){
