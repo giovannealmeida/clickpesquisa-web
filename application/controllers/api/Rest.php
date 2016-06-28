@@ -137,7 +137,7 @@ class Rest extends REST_Controller {
             'status' => $this->post('status'),
         );
         if(!empty($this->post('photo_id'))){
-            $user['photo_id'] => $this->post('photo_id'),
+            $user['photo_id'] = $this->post('photo_id');
         }
         $this->User->insert($user);
         $message = ['message' => $user['first_name'].' added'];
