@@ -130,6 +130,7 @@ class Rest extends REST_Controller {
         $user = array(
             'first_name' => $this->post('first_name'),
             'last_name' => $this->post('last_name'),
+            'cpf' => $this->post('cpf'),
             'username' => $this->post('username'),
             'password' => $this->post('password'),
             'email' => $this->post('email'),
@@ -160,6 +161,9 @@ class Rest extends REST_Controller {
         }
         if(!empty($this->put('last_name'))){
             $data['last_name'] = $this->put('last_name');
+        }
+        if(!empty($this->put('cpf'))){
+            $data['cpf'] = $this->put('cpf');
         }
         if(!empty($this->put('username'))){
             $data['username'] = $this->put('username');

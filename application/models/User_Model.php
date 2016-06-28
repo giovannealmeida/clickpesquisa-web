@@ -6,6 +6,7 @@ class User_Model extends CI_Model {
 	public $id;
 	public $first_name;
 	public $last_name;
+	public $cpf;
 	public $username;
 	public $password;
 	public $email;
