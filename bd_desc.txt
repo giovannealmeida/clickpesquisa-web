@@ -1,0 +1,182 @@
+click_pesquisa_db
+
+##############################
+Tabela: form
+##############################
+
+Descrição:
+Tabela responsável por armazenar formulários que contêm questões.
+
+Colunas:
+id		- id do formulário
+name		- nome do formulário (ex.: form de situação de bairro, rua, etc.)
+created_at	- data em que o formulário foi criado
+user_id_creator	- id do usuário que criou o formulário
+form_group_id	- id do grupo do formulário (ex.: grupo de pesquisa urbana -  abriga forms de pesquisas urbanas)
+
+
+##############################
+Tabela: form_group
+##############################
+
+Descrição:
+Tabela responsável por armazenar os grupos de formulários. Os formulários podem ser separados em grupo/categorias, por exemplo:
+	- Formulários de pesquisa política
+	- Formulários de aceitação de um produto
+	- Formulários de pesquisa urbana
+
+Colunas:
+id	- id do grupo de formulários
+name	- nome do grupo de formulários
+
+##############################
+Tabela: location
+##############################
+
+Descrição:
+Armazena a localização onde ocorreu uma pesquisa. A localização pode ser armazenada de três maneiras:
+	1. Através das coordenadas geográficas (latitude e longitude)
+	2. Através do endereço físico (bairro, rua, número, CEP)
+	3. 1 e 2 juntas
+
+Colunas:
+id		- id da localização
+lat		- latitude do local
+long		- longitude do local
+neighborhood 	- bairro
+number		- número do local
+address		- nome de rua, avenida, praça, etc.
+cep		- CEP (armazenado no formato 99999-999)
+city		- cidade
+
+##############################
+Tabela: phone
+##############################
+
+Descrição:
+Havendo a possibilidade de os usuários possuírem mais de um número de telefone, esta tabela foi criada para o armazenamento de números de telefones dos usuários.
+
+Colunas:
+id	- id do registro de telefone
+ddd	- ddd do número de telefone (armazenado no formato 99)
+number	- número de telefone (armazenado no formato 99999-9999)
+user_id	- id do usuário cujo número pertence
+
+##############################
+Tabela: photo
+##############################
+
+Descrição:
+Tabela responsável pelo armazenamento das imagens de perfil dos usuários no formato BLOB.
+
+Colunas:
+id	- id da imagem
+image	- bits da imagem
+
+##############################
+Tabela: question
+##############################
+
+Descrição:
+Tabela que armazena as questões que estarão contidas nos formulários.
+
+Colunas:
+id		 - id da questão
+order		 - ordem da questão no formulários (não pode ocorrer duas questões no mesmo formulário com o mesmo número de ordem)
+text		 - texto da questão (ex.: Qual a sua cor preferida?)
+form_id		 - id do formulário o qual a questão pertence
+question_type_id - tipo da questão (radio button, checkbox, texto, select, etc.)
+num_options	 - número de itens que a questão terá (será 0 se a questão for do tipo texto)
+comment		 - um comentário adicionado por quem criou a questão a fim de identificá-la
+
+##############################
+Tabela: question_item
+##############################
+
+Descrição:
+Tabela que armazena os itens/alternativas de cada questão. O número de itens varia de questão para questão, daí a necessidade de armazenar os itens separadamente. Alguns itens possuem ids de "questões filhas". "Questões filhas" são questões derivadas da escolha do usuário. Por exemplo, pode haver a questão:
+
+21. Qual o seu meio de transporte?
+A) Carro
+B) Moto
+C) Ônibus
+D) A pé
+
+Se o usuário selecionar o item A), este item poderá ter uma questão filha referente ao meio de transporte "carro". Caso o usuário selecione o item B), este item poderá ter uma outra questão filha referente ao meio de transporte "moto".
+
+Colunas:
+id		  - id do item
+text		  - texto/label/rótulo do item (ex.: amarelo, vermelho, azul, etc.)
+question_id	  - id da questão ao qual o item pertence
+order		  - ordem em que o item aparecerá (imporante ao listar opções de idade em ordem decrescente)
+child_question_id - id de uma questão filha que será disparada caso o item que a possuir for selecionado
+
+##############################
+Tabela: question_type
+##############################
+
+Descrição:
+Tabela que armazena os tipos de questões (textuais, checkbox, radio button, etc.).
+
+Colunas:
+id	- id do tipo de questão
+type	- descrição textual do tipo
+
+##############################
+Tabela: survey
+##############################
+
+Descrição:
+Tabela que armazenas as pesquisas realizadas. Assim que o operador finalizar uma pesquisa e a enviar para o servidor, um novo registro será adicionado a esta tabela.
+
+Colunas:
+id	    - id da pesquisa 
+user_id	    - id do usuário que realizou a pesquisa (operador)
+form_id	    - id do formulário utilizado na pesquisa
+date	    - data de realização da pesquisa
+location_id - id da localização onde a pesquisa foi realizada
+
+##############################
+Tabela: survey_history
+##############################
+
+Descrição:
+Esta tabela armazena o histórioco de pesquisas salvando o histórico de de cada item de cada questão respondida. Através desta tabela é possível somar os valores quantitativos de questões respondidas.
+
+Colunas:
+id		  - id do histórico
+survey_id	  - id da pesquisa realizada
+question_id	  - id da questão respondida
+chosen_item_order - ordem em que se encontra o item escolhido
+chosem_item_text  - texto do item escolhido (usado para exibição do histórico e armazenado para evitar outra consulta com base no id do item)
+response_text	  - texto respondidos em questões discursivas
+
+##############################
+Tabela: user
+##############################
+
+Descrição:
+Tabela que armazena os dados dos usuários.
+
+Colunas:
+id	   - id do usuário
+first_name - primeiro nome do usuário
+last_name  - último nome do usuário
+username   - nome do usuário para acesso ao sistema
+password   - senha do usuário para acesso ao sistema
+email	   - e-mail do usuário
+photo	   - id da foto de perfil do usuário
+role 	   - papel assumido pelo usuário no sistema (administrador, operador, etc.)
+status	   - status do usuário (ativo ou inativo)
+reg_time   - data do registro do usuário
+
+##############################
+Tabela: user_role
+##############################
+
+Descrição:
+Tabela que armazena todos os papéis que um usuário pode assumir no sistema.
+
+Colunas:
+id	- id do papel
+role 	- nome do papel
