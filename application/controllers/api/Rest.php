@@ -309,14 +309,18 @@ class Rest extends REST_Controller {
         $id = $this->get('id');
         $form_group_id = $this->get('form_group_id');
         if ($id === NULL && $form_group_id === NULL) {
-            $forms = $this->Form->getAll();
+            $forms = $this->Form->getAllComplete();
             if ($forms) {
-                $this->response($forms, REST_Controller::HTTP_OK);
+                $this->response([
+                    'status' => TRUE,
+                    'data' => $forms,
+                    'message' => ''
+                ], REST_Controller::HTTP_OK);
             } else {
                 $this->response([
                     'status' => FALSE,
                     'message' => 'No forms were found'
-                ], REST_Controller::HTTP_NOT_FOUND);
+                ], REST_Controller::HTTP_OK);
             }
         }
 
@@ -714,18 +718,19 @@ class Rest extends REST_Controller {
                     'status' => TRUE,
                     'data' => $user,
                     'message' => ''];
-                $this->set_response($message, REST_Controller::HTTP_OK);
-            } else {
-                $message = [
-                    'status' => FALSE,
-                    'message' => 'User could not be found'];
-                $this->set_response($message, REST_Controller::HTTP_NOT_FOUND);
+                    $this->set_response($message, REST_Controller::HTTP_OK);
+                } else {
+                    $message = [
+                        'status' => FALSE,
+                        'message' => 'Usuário ou senha inválidos'];
+                        //$this->set_response($message, REST_Controller::HTTP_NOT_FOUND);
+                        $this->set_response($message, REST_Controller::HTTP_OK);
+                    }
+                } else {
+                    $message = [
+                        'status' => FALSE,
+                        'message' => 'No username or password informed'];
+                        $this->set_response($message, REST_Controller::HTTP_BAD_REQUEST);
+                    }
+                }
             }
-        } else {
-            $message = [
-                'status' => FALSE,
-                'message' => 'No username or password informed'];
-            $this->set_response($message, REST_Controller::HTTP_BAD_REQUEST);
-        }
-    }
-}

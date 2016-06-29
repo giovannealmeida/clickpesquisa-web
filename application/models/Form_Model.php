@@ -31,9 +31,51 @@ class Form_Model extends CI_Model {
 
 	function getAll(){
 		$query = $this->db->get('form');
-
 		if(!empty($query)){
 			return $query->result();
+		}
+		return NULL;
+	}
+
+	function getAllComplete(){
+		$result = NULL;
+
+		$this->load->model('Question_Model','Q');
+		//$forms possui todos os formulários cadastrados (com ou sem questões)
+		$forms = $this->getAll();
+
+		/* BUSCANDO QUESTÕES DO FORMULÁRIO */
+		if(count($forms) > 0){
+			foreach ($forms as $key => $value) {
+				//$questions possui as questões do formulário id=$value->id
+				$questions = $this->Q->getByFormId($value->id);
+				//Verifica se a consulta retornou alguma questão no form atual
+				if(count($questions)>0){
+					//Se retornou alguma questão, existe form não vazio
+					$emptyForms = FALSE;
+					$forms[$key]->questions = $questions;
+					//$forms_validos possui somente formulários com questões
+					$forms_validos[$key] = $forms[$key];
+				}
+			}
+
+			/* BUSCANDO ITENS DAS QUESTÕES ENCONTRADAS */
+			$this->load->model('QuestionItem_Model','QI');
+
+			//Itera entre os forms
+			foreach ($forms_validos as $idx => $form) {
+				//Itera entre as questões dos forms
+				foreach ($form->questions as $key => $question) {
+					//Retornas os itens da questão atual
+					$items = $this->QI->getByQuestionId($question->id);
+					if(count($items)>0){
+						$forms_validos[$idx]->questions[$key]->items = $items;
+						$result[$idx] = $forms_validos[$idx];
+					}
+				}
+			}
+
+			return $result;
 		}
 
 		return NULL;
