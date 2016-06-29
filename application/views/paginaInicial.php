@@ -1,3 +1,3 @@
 <a href="<?=  base_url("index.php/logout");?>">Logout</a>
 <br/>
-<a href="#">Novo Formulário</a>
+<a href="<?=  base_url("index.php/NovoFormulario");?>">Novo Formulário</a>
