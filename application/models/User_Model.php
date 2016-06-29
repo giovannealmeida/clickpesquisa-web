@@ -43,6 +43,16 @@ class User_Model extends CI_Model {
 		}
 		return NULL;
 	}
+	
+        function getByCpfAndPassword($cpf,$password) {
+		$this->db->where('cpf', $cpf);
+		$this->db->where('password', $password);
+		$query = $this->db->get('user');
+		if (count($query->result()) == 1) {
+			return $query->row_array();
+		}
+		return NULL;
+	}
 
 	function getAll(){
 		$query = $this->db->get('user');

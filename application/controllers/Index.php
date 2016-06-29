@@ -13,6 +13,8 @@ class Index extends CI_Controller {
         if (!$this->session->userdata("logged_in")){
             redirect('login');
         }
+        
+        $this->load->view("paginaInicial");
 
     }
 }
