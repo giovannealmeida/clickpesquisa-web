@@ -304,10 +304,41 @@ class Rest extends REST_Controller {
     }
 
     /* FORM RESOURCE */
+    function updateforms_post(){
+        $this->load->model('Form_Model','Form');
+        $last_update_time = $this->post('last_update_time');
+        if($last_update_time !== NULL){
+            $forms = $this->Form->getAllComplete($last_update_time);
+            if($forms != NULL){
+                if(count($forms) == 1){
+                    $message = 'Você tem 1 novo formulário';
+                } else {
+                    $message = 'Você tem '.count($forms).' novos formulários';
+                }
+                $this->response([
+                    'status' => TRUE,
+                    'data' => $forms,
+                    'message' => $message
+                ], REST_Controller::HTTP_OK);
+            } else {
+                $this->response([
+                    'status' => FALSE,
+                    'message' => 'Não existem novos formulários'
+                ], REST_Controller::HTTP_OK);
+            }
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Missing parameters'
+            ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+
     function forms_get() {
         $this->load->model('Form_Model','Form');
         $id = $this->get('id');
         $form_group_id = $this->get('form_group_id');
+
         if ($id === NULL && $form_group_id === NULL) {
             $forms = $this->Form->getAllComplete();
             if ($forms) {

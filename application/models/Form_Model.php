@@ -3,6 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Form_Model extends CI_Model {
 
+	/*
+		TODO: Quando a restrição de permissão por grupo for implementada, alterar
+		todas funções para que recebam por parâmetro o id do usuário que está
+		pedindo (com exceção de getAll())
+	*/
 	public $id;
 	public $name;
 	public $created_at; //Data de criação
@@ -37,12 +42,23 @@ class Form_Model extends CI_Model {
 		return NULL;
 	}
 
-	function getAllComplete(){
+	function getByCreatedAfter($time) {
+		$this->db->where('(UNIX_TIMESTAMP(created_at)*1000) >', $time);
+		$this->db->order_by('created_at', 'DESC');
+		$query = $this->db->get('form');
+
+		if (count($query->result()) > 0) {
+			return $query->result();
+		}
+		return NULL;
+	}
+
+	function getAllComplete($last_update_time=0){
 		$result = NULL;
 
 		$this->load->model('Question_Model','Q');
 		//$forms possui todos os formulários cadastrados (com ou sem questões)
-		$forms = $this->getAll();
+		$forms = $this->getByCreatedAfter($last_update_time);
 
 		/* BUSCANDO QUESTÕES DO FORMULÁRIO */
 		if(count($forms) > 0){
@@ -75,9 +91,9 @@ class Form_Model extends CI_Model {
 				}
 			}
 
+			$result = array_values($result);
 			return $result;
 		}
-
 		return NULL;
 	}
 
