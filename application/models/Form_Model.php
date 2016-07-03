@@ -43,8 +43,8 @@ class Form_Model extends CI_Model {
 	}
 
 	function getByCreatedAfter($time) {
-		$this->db->where('(UNIX_TIMESTAMP(created_at)*1000) >', $time);
-		$this->db->order_by('created_at', 'DESC');
+		$this->db->where('(UNIX_TIMESTAMP(last_updated_at)*1000) >', $time);
+		$this->db->order_by('last_updated_at', 'DESC');
 		$query = $this->db->get('form');
 
 		if (count($query->result()) > 0) {
