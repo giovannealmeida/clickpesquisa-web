@@ -13,6 +13,7 @@ Colunas:
 id		- id do formulário
 name		- nome do formulário (ex.: form de situação de bairro, rua, etc.)
 created_at	- data em que o formulário foi criado
+last_updated_at	- última data em que o formulário foi atualizado
 user_id_creator	- id do usuário que criou o formulário
 form_group_id	- id do grupo do formulário (ex.: grupo de pesquisa urbana -  abriga forms de pesquisas urbanas)
 
@@ -164,6 +165,7 @@ Colunas:
 id	   - id do usuário
 first_name - primeiro nome do usuário
 last_name  - último nome do usuário
+cpf	   - CPF do usuário
 username   - nome do usuário para acesso ao sistema
 password   - senha do usuário para acesso ao sistema
 email	   - e-mail do usuário
