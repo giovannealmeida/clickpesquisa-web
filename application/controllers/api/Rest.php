@@ -737,12 +737,12 @@ class Rest extends REST_Controller {
     }
 
     /* LOGIN RESOURCE */
-    function login_post(){
+    function login_post() {
         $this->load->model('User_Model','User');
         $username = $this->post('username');
         $password = $this->post('password');
 
-        if($password !== NULL && $password !== NULL){
+        if($password !== NULL && $password !== NULL) {
             $user = $this->User->getByUsernameAndPassword($username,$password);
             if($user !== NULL){
                 $message = [
@@ -750,18 +750,51 @@ class Rest extends REST_Controller {
                     'data' => $user,
                     'message' => ''];
                     $this->set_response($message, REST_Controller::HTTP_OK);
-                } else {
-                    $message = [
-                        'status' => FALSE,
-                        'message' => 'Usuário ou senha inválidos'];
-                        //$this->set_response($message, REST_Controller::HTTP_NOT_FOUND);
-                        $this->set_response($message, REST_Controller::HTTP_OK);
-                    }
-                } else {
-                    $message = [
-                        'status' => FALSE,
-                        'message' => 'No username or password informed'];
-                        $this->set_response($message, REST_Controller::HTTP_BAD_REQUEST);
-                    }
-                }
+            } else {
+                $message = [
+                    'status' => FALSE,
+                    'message' => 'Usuário ou senha inválidos'];
+                    //$this->set_response($message, REST_Controller::HTTP_NOT_FOUND);
+                    $this->set_response($message, REST_Controller::HTTP_OK);
             }
+        } else {
+            $message = [
+                'status' => FALSE,
+                'message' => 'No username or password informed'];
+                $this->set_response($message, REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+
+    function survey_post(){
+        $questions = $this->post('data');
+        //Primeiro salva o survey
+        $this->load->model('Survey_Model','Survey');
+        $this->load->model('SurveyHistory_Model','SurveyH');
+
+        if($questions != NULL){
+
+            //Conversão filha da puta de "[{chave:valor},{chave1,valor1}]" para array
+            $questions = json_decode($questions,TRUE);
+            foreach ($questions as $key => $value) {
+                foreach ($value as $vkey => $vvalue)
+                $data[$vkey] = $value[$vkey];
+            }
+            //fim-conversão
+            //var_dump($data);
+            foreach ($data as $key => $value) {
+                $this->SurveyH->insert([
+                    'survey_id' => '1',
+                    'question_id' => $key,
+                    'item_id' => $value,
+                ]);
+            }
+        }
+
+        $message = [
+            'status' => TRUE,
+            'data' => $questions,
+            'message' => 'HashMap recebido'];
+            $this->set_response($message, REST_Controller::HTTP_OK);
+
+    }
+}
